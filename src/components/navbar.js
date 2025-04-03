@@ -16,7 +16,7 @@ function Navbar() {
       </div>
       <div className="navbar-right">
         <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
+        {/* <Link to="/register">Register</Link> */}
       </div>
     </nav>
   );

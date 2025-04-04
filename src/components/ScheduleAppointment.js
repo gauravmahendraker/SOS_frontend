@@ -166,7 +166,7 @@ const ScheduleAppointment = () => {
 
                 // Redirect to appointments page after 2 seconds
                 setTimeout(() => {
-                    navigate("/my-appointments");
+                    navigate("/patient-dashboard");
                 }, 2000);
             }
         } catch (err) {

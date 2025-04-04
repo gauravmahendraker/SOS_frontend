@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/navbar';
 import Login from './pages/login';
 import PatientDashboard from './pages/patientDashboard';
+import DoctorDashboard from './pages/doctorDashboard';
 import AuthCallback from "./services/authCallback";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<div>Home Page</div>} />
             <Route path="/login" element={<Login />} />
             <Route path="/patient-dashboard" element={<PatientDashboard />} />
+            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
             <Route path="/auth/callback/:userType" element={<AuthCallback />} />
           </Routes>
         </div>

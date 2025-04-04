@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Profile from "../components/Profile";
-import AppointmentHistory from "../components/AppointmentHistory";
-import SearchDoctors from "../components/SearchDoctors";
-import ScheduleAppointment from "../components/ScheduleAppointment";
+import Profile from "../components/profile";
+import AppointmentHistory from "../components/appointmentHistory";
+import SearchDoctors from "../components/searchDoctors";
+import ScheduleAppointment from "../components/scheduleAppointment";
 
 const PatientDashboard = () => {
     const [profile, setProfile] = useState(null);

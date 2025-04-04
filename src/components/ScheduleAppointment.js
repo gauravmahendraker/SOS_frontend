@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
-import "./ScheduleAppointment.css";
+import "./scheduleAppointment.css";
 
 const ScheduleAppointment = () => {
     const { doctorId } = useParams(); // If coming from doctor details page

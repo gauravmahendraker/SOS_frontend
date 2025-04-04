@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import "./AppointmentHistory.css";
+import "./appointmentHistory.css";
+import AppointmentDetails from "./appointmentDetails.js";
 
 const AppointmentHistory = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -40,7 +42,7 @@ const AppointmentHistory = () => {
 
     const formatDateTime = (dateString) => {
         try {
-            return format(new Date(dateString), "PPP 'at' p"); // Example: "April 4, 2025 at 2:30 PM"
+            return format(new Date(dateString), "PPP 'at' p");
         } catch (err) {
             return "Invalid date";
         }
@@ -49,7 +51,7 @@ const AppointmentHistory = () => {
     const calculateEndTime = (startTime, durationMinutes) => {
         try {
             const endTime = new Date(new Date(startTime).getTime() + durationMinutes * 60000);
-            return format(endTime, "p"); // Example: "3:00 PM"
+            return format(endTime, "p");
         } catch (err) {
             return "Unknown";
         }
@@ -79,7 +81,6 @@ const AppointmentHistory = () => {
             );
 
             if (response.status === 200) {
-                // Update the local state to reflect the cancellation
                 setAppointments(appointments.map(appointment =>
                     appointment._id === appointmentId
                         ? { ...appointment, status: "canceled" }
@@ -103,6 +104,13 @@ const AppointmentHistory = () => {
     return (
         <div className="appointments-container">
             <h2>My Appointments</h2>
+
+            {selectedAppointmentId && (
+                <AppointmentDetails
+                    appointmentId={selectedAppointmentId}
+                    onClose={() => setSelectedAppointmentId(null)}
+                />
+            )}
 
             {appointments?.length > 0 ? (
                 <div className="appointments-list">
@@ -144,7 +152,12 @@ const AppointmentHistory = () => {
                                         Cancel Appointment
                                     </button>
                                 )}
-                                <button className="details-btn">View Details</button>
+                                <button
+                                    className="details-btn"
+                                    onClick={() => setSelectedAppointmentId(appointment._id)}
+                                >
+                                    View Details
+                                </button>
                             </div>
                         </div>
                     ))}

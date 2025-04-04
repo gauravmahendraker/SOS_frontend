@@ -84,7 +84,6 @@ const ScheduleAppointment = () => {
                     end: new Date(slot.end),
                     display: `${moment(slot.start).format("h:mm A")} - ${moment(slot.end).format("h:mm A")}`
                 }));
-
                 setAvailableSlots(formattedSlots);
 
                 if (formattedSlots.length === 0) {

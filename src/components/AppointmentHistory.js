@@ -73,7 +73,7 @@ const AppointmentHistory = () => {
     const handleCancelAppointment = async (appointmentId) => {
         try {
             const response = await axios.post(
-                `${API_URL}/appointments/cancel`,
+                `${API_URL}/appointment/cancel`,
                 { appointmentId },
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Before running the code, add a .env to the project containing the link to backend server
 ```
-REACT_APP_API_URL=<Your backend server link like http://localhost:500>
+REACT_APP_API_URL=<Your backend server link like http://localhost:5000>
 ```
 
 ## Available Scripts

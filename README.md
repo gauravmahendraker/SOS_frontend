@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Install Dependencies
+
+Run `npm i` to install the dependencies for this project
+
 ## Add a .env
 
 Before running the code, add a .env to the project containing the link to backend server

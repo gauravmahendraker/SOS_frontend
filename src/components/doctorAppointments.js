@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import "./appointmentHistory.css"; // Reusing the same CSS
+import "./AppointmentHistory.css"; // Reusing the same CSS
 import AppointmentDetails from "./appointmentDetails.js"; // Reusing the same component
 
 const DoctorAppointments = () => {

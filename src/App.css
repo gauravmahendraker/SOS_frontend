@@ -1,87 +1,95 @@
-/* src/App.css */
-.App {
-  font-family: Arial, sans-serif;
+.home-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
 }
 
-.container {
+.hero-section {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.navbar {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #f8f9fa;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  flex-wrap: wrap;
+  overflow: hidden;
 }
 
-.navbar-left, .navbar-center, .navbar-right {
+.hero-content {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  width: 100%;
 }
 
-.navbar-center ul {
+.hero-text {
+  flex: 1;
+  padding: 3rem;
   display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.navbar-center li {
-  margin: 0 10px;
-}
-
-.navbar a {
-  text-decoration: none;
+.hero-text h1 {
+  font-size: 2.8rem;
   color: #333;
-  padding: 5px;
+  margin-bottom: 1rem;
 }
 
-.navbar a:hover {
+.hero-text .highlight {
   color: #007bff;
 }
 
-.login-container, .register-container {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.hero-text p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+  line-height: 1.6;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
+.btn.primary {
   background-color: #007bff;
   color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 4px;
-  cursor: pointer;
+}
+
+.btn.primary:hover {
+  background-color: #0056b3;
+}
+
+.btn.secondary {
+  background-color: #e2e6ea;
+  color: #333;
+}
+
+.btn.secondary:hover {
+  background-color: #d6d8db;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f8ff;
+}
+
+.hero-image img {
   width: 100%;
-}
-
-button:hover {
-  background-color: #0069d9;
-}
-
-.dashboard {
-  padding: 20px;
+  max-width: 400px;
+  padding: 2rem;
 }

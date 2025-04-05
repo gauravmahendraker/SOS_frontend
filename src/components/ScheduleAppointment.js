@@ -4,10 +4,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useParams, useNavigate } from "react-router-dom";
 import moment from "moment-timezone";
-import "./scheduleAppointment.css";
+import "./ScheduleAppointment.css";
 
 const ScheduleAppointment = () => {
-    const { doctorId } = useParams(); // If coming from doctor details page
+    const { doctorId } = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -19,13 +19,12 @@ const ScheduleAppointment = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [availableSlots, setAvailableSlots] = useState([]);
     const [selectedSlot, setSelectedSlot] = useState(null);
-    const [appointmentDuration, setAppointmentDuration] = useState(30); // Default duration in minutes
+    const [appointmentDuration, setAppointmentDuration] = useState(30);
     const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
 
     const API_URL = process.env.REACT_APP_API_URL;
-    const USER_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get user's timezone
+    const USER_TIMEZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // Fetch doctors for dropdown selection
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
@@ -36,7 +35,6 @@ const ScheduleAppointment = () => {
                 if (response.status === 200) {
                     setDoctors(response.data.data);
 
-                    // If doctorId is provided in URL and exists in the fetched doctors, select it
                     if (doctorId && response.data.data.some(doc => doc._id === doctorId)) {
                         setSelectedDoctor(doctorId);
                         checkAvailabilityForDate(new Date(), doctorId);
@@ -51,7 +49,6 @@ const ScheduleAppointment = () => {
         fetchDoctors();
     }, [API_URL, doctorId]);
 
-    // Function to check availability when doctor or date changes
     const checkAvailabilityForDate = async (date, doctor = selectedDoctor) => {
         if (!doctor) {
             setError("Please select a doctor first");
@@ -67,18 +64,13 @@ const ScheduleAppointment = () => {
 
             const response = await axios.post(
                 `${API_URL}/appointment/check-availability`,
-                {
-                    doctor,
-                    date: formattedDate,
-                    timeZone: USER_TIMEZONE
-                },
+                { doctor, date: formattedDate, timeZone: USER_TIMEZONE },
                 {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 }
             );
 
             if (response.status === 200) {
-                // Format the slots for UI display
                 const formattedSlots = response.data.data.map(slot => ({
                     start: new Date(slot.start),
                     end: new Date(slot.end),
@@ -100,7 +92,6 @@ const ScheduleAppointment = () => {
         }
     };
 
-    // Handle doctor selection change
     const handleDoctorChange = (e) => {
         const newDoctorId = e.target.value;
         setSelectedDoctor(newDoctorId);
@@ -111,7 +102,6 @@ const ScheduleAppointment = () => {
         }
     };
 
-    // Handle date selection change
     const handleDateChange = (date) => {
         setSelectedDate(date);
         if (selectedDoctor) {
@@ -119,18 +109,15 @@ const ScheduleAppointment = () => {
         }
     };
 
-    // Handle slot selection
     const handleSlotSelect = (slot) => {
         setSelectedSlot(slot);
         setError(null);
     };
 
-    // Handle duration change
     const handleDurationChange = (e) => {
         setAppointmentDuration(parseInt(e.target.value));
     };
 
-    // Handle booking appointment
     const handleBookAppointment = async () => {
         if (!selectedDoctor || !selectedSlot) {
             setError("Please select a doctor and time slot");
@@ -147,7 +134,7 @@ const ScheduleAppointment = () => {
                 `${API_URL}/appointment/book`,
                 {
                     doctor: selectedDoctor,
-                    patient: localStorage.getItem("userId"), // Assuming you store userId in localStorage
+                    patient: localStorage.getItem("userId"),
                     date: formattedDate,
                     timeSlotStart: selectedSlot.start,
                     duration: appointmentDuration,
@@ -160,17 +147,15 @@ const ScheduleAppointment = () => {
 
             if (response.status === 201) {
                 setSuccess("Appointment booked successfully!");
-                // Clear selections
                 setSelectedSlot(null);
 
-                // Redirect to appointments page after 2 seconds
                 setTimeout(() => {
                     navigate("/patient-dashboard");
                 }, 2000);
             }
         } catch (err) {
             console.error("Error booking appointment:", err);
-            if (err.response && err.response.data && err.response.data.message) {
+            if (err.response?.data?.message) {
                 setError(err.response.data.message);
             } else {
                 setError("Failed to book appointment. Please try again.");
@@ -180,7 +165,6 @@ const ScheduleAppointment = () => {
         }
     };
 
-    // Filter out past dates from date picker
     const isDateInPast = (date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -188,69 +172,70 @@ const ScheduleAppointment = () => {
     };
 
     return (
-        <div className="schedule-appointment-container">
-            <h2>Schedule an Appointment</h2>
+        <div className="schedule-appointment">
+            <h2 className="heading">Schedule an Appointment</h2>
 
-            {success && <div className="success-message">{success}</div>}
-            {error && <div className="error-message">{error}</div>}
+            {success && <div className="alert success">{success}</div>}
+            {error && <div className="alert error">{error}</div>}
 
-            <div className="form-group">
-                <label htmlFor="doctor">Select Doctor</label>
-                <select
-                    id="doctor"
-                    value={selectedDoctor}
-                    onChange={handleDoctorChange}
-                    disabled={loading}
-                >
-                    <option value="">-- Select a Doctor --</option>
-                    {doctors.map(doctor => (
-                        <option key={doctor._id} value={doctor._id}>
-                            Dr. {doctor.name} - {doctor.specialization}
-                        </option>
-                    ))}
-                </select>
+            <div className="form">
+                <div className="form-field">
+                    <label htmlFor="doctor">Doctor</label>
+                    <select
+                        id="doctor"
+                        value={selectedDoctor}
+                        onChange={handleDoctorChange}
+                        disabled={loading}
+                    >
+                        <option value="">-- Select a Doctor --</option>
+                        {doctors.map(doctor => (
+                            <option key={doctor._id} value={doctor._id}>
+                                Dr. {doctor.name} - {doctor.specialization}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="form-field">
+                    <label htmlFor="date">Date</label>
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={handleDateChange}
+                        filterDate={isDateInPast}
+                        minDate={new Date()}
+                        dateFormat="MMMM d, yyyy"
+                        className="date-picker"
+                        disabled={!selectedDoctor || loading}
+                    />
+                </div>
+
+                <div className="form-field">
+                    <label htmlFor="duration">Duration</label>
+                    <select
+                        id="duration"
+                        value={appointmentDuration}
+                        onChange={handleDurationChange}
+                        disabled={loading}
+                    >
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+                    </select>
+                </div>
             </div>
 
-            <div className="form-group">
-                <label htmlFor="date">Select Date</label>
-                <DatePicker
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    filterDate={isDateInPast}
-                    minDate={new Date()}
-                    dateFormat="MMMM d, yyyy"
-                    className="date-picker"
-                    disabled={!selectedDoctor || loading}
-                />
-            </div>
-
-            <div className="form-group">
-                <label htmlFor="duration">Appointment Duration</label>
-                <select
-                    id="duration"
-                    value={appointmentDuration}
-                    onChange={handleDurationChange}
-                    disabled={loading}
-                >
-                    <option value="15">15 minutes</option>
-                    <option value="30">30 minutes</option>
-                    <option value="45">45 minutes</option>
-                    <option value="60">60 minutes</option>
-                </select>
-            </div>
-
-            <div className="available-slots-section">
-                <h3>Available Time Slots</h3>
-
+            <div className="slots-section">
+                <h3>Available Slots</h3>
                 {isCheckingAvailability ? (
-                    <div className="loading-message">Checking availability...</div>
+                    <p className="loading-text">Checking availability...</p>
                 ) : (
-                    <div className="slots-container">
+                    <div className="slots">
                         {availableSlots.length > 0 ? (
                             availableSlots.map((slot, index) => (
                                 <button
                                     key={index}
-                                    className={`slot-button ${selectedSlot && selectedSlot.start.getTime() === slot.start.getTime() ? 'selected' : ''}`}
+                                    className={`slot ${selectedSlot?.start.getTime() === slot.start.getTime() ? 'selected' : ''}`}
                                     onClick={() => handleSlotSelect(slot)}
                                     disabled={loading}
                                 >
@@ -258,15 +243,15 @@ const ScheduleAppointment = () => {
                                 </button>
                             ))
                         ) : (
-                            <p className="no-slots-message">
-                                {selectedDoctor ? "No available slots for the selected date." : "Please select a doctor and date."}
+                            <p className="no-slots">
+                                {selectedDoctor ? "No slots available for this date." : "Please select a doctor and date."}
                             </p>
                         )}
                     </div>
                 )}
             </div>
 
-            <div className="button-container">
+            <div className="actions">
                 <button
                     className="book-button"
                     onClick={handleBookAppointment}

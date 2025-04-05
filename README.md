@@ -2,6 +2,13 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Add a .env
+
+Before running the code, add a .env to the project containing the link to backend server
+```
+REACT_APP_API_URL=http://localhost:5000
+```
+
 ## Available Scripts
 
 In the project directory, you can run:

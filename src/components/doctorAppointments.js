@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import "./AppointmentHistory.css"; // Reusing the same CSS
-import AppointmentDetails from "./appointmentDetails.js"; // Reusing the same component
+import AppointmentDetails from "./AppointmentDetails.js"; // Reusing the same component
 
 const DoctorAppointments = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
-    
+
 
     const API_URL = process.env.REACT_APP_API_URL;
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Profile from "../components/Profile";
-import DoctorAppointments from "../components/doctorAppointments";
-import UploadPrescription from "../components/uploadPrescription";
+import DoctorProfile from "../components/DoctorProfile";
+import DoctorAppointments from "../components/DoctorAppointments";
+import UploadPrescription from "../components/UploadPrescription";
 
 const DoctorDashboard = () => {
     const [profile, setProfile] = useState(null);
@@ -46,7 +46,7 @@ const DoctorDashboard = () => {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-                            ${activeTab === tab 
+                            ${activeTab === tab
                                 ? "bg-blue-600 text-white shadow-md"
                                 : "bg-white text-gray-700 border border-gray-300 hover:bg-blue-100"
                             }`}
@@ -61,7 +61,31 @@ const DoctorDashboard = () => {
 
             {/* Load Components Conditionally */}
             <div className="bg-white p-6 rounded-lg shadow">
-                {activeTab === "profile" && <Profile profile={profile} />}
+                {activeTab === "profile" && <DoctorProfile
+                    profile={profile}
+                    onUpdate={async (updatedData) => {
+                        try {
+                            const response = await fetch(`${API_URL}/doctor/${updatedData.email}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                                },
+                                body: JSON.stringify(updatedData),
+                            });
+
+                            const result = await response.json();
+                            if (!response.ok) throw new Error(result.message);
+
+                            alert("Doctor profile updated successfully!");
+                            // Optionally update local state here with result.data
+                        } catch (err) {
+                            console.error("Error updating doctor:", err);
+                            alert("Failed to update doctor profile.");
+                        }
+                    }}
+                />
+                }
                 {activeTab === "appointments" && <DoctorAppointments />}
                 {activeTab === "prescriptions" && <UploadPrescription />}
                 {activeTab === "patients" && (

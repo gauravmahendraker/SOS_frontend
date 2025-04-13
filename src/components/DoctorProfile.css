@@ -1,0 +1,98 @@
+.doctor-profile-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: auto;
+    font-family: "Segoe UI", sans-serif;
+}
+
+h3 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.profile-section label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #444;
+}
+
+.profile-section input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.slot-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.slot-list li {
+    margin-bottom: 0.5rem;
+    background: #e2e8f0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slot-inputs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.slot-inputs input {
+    padding: 0.4rem;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+}
+
+.remove-btn {
+    background: transparent;
+    color: #d9534f;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.button-group button {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}

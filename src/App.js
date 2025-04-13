@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar";
 import Login from "./pages/login";
 import PatientDashboard from "./pages/patientDashboard";
 import DoctorDashboard from "./pages/doctorDashboard";

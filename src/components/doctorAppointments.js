@@ -9,6 +9,7 @@ const DoctorAppointments = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+    
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -113,7 +114,6 @@ const DoctorAppointments = () => {
     const pastAppointments = appointments.filter(
         app => new Date(app.timeSlotStart) < now || app.status === "canceled"
     );
-
     return (
         <div className="appointments-container">
             <h2>My Appointment Schedule</h2>
@@ -212,14 +212,12 @@ const DoctorAppointments = () => {
                                         </div>
 
                                         <div className="appointment-actions">
-                                            {appointment.status === "completed" && (
-                                                <button
-                                                    className="prescription-btn"
-                                                    onClick={() => handleAddPrescription(appointment._id)}
-                                                >
-                                                    Add Prescription
-                                                </button>
-                                            )}
+                                            <button
+                                                className="prescription-btn"
+                                                onClick={() => handleAddPrescription(appointment._id)}
+                                            >
+                                                Add Prescription
+                                            </button>
                                             <button
                                                 className="details-btn"
                                                 onClick={() => setSelectedAppointmentId(appointment._id)}

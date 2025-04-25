@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import "./Navbar.css";
 
-const Navbar = ({ isLoggedIn, onLogout }) => {
+const Navbar = ({ isLoggedIn, onLogout, darkMode, toggleTheme }) => {
   return (
     <nav className="navbar">
       <Link to="/" className="logo">
@@ -12,6 +13,9 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
         Smart Health
       </Link>
       <div className="nav-buttons">
+        <div className="theme-toggle" onClick={toggleTheme}>
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </div>
         {isLoggedIn ? (
           <button onClick={onLogout} className="btn secondary">Logout</button>
         ) : (

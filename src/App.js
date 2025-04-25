@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/navbar";
 import Login from "./pages/login";
@@ -7,7 +7,6 @@ import PatientDashboard from "./pages/patientDashboard";
 import DoctorDashboard from "./pages/doctorDashboard";
 import Home from "./pages/home";
 import AuthCallback from "./services/authCallback";
-import { Sun, Moon } from "lucide-react";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -34,23 +33,25 @@ function App() {
   return (
     <Router>
       <div className={`App ${darkMode ? "dark-mode" : "light-mode"}`}>
-        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-        <div className="theme-toggle" onClick={toggleTheme}>
-          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-        </div>
+        <Navbar
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
+          darkMode={darkMode}
+          toggleTheme={toggleTheme}
+        />
         <div className="container">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
+            <Route path="/" element={<Home darkMode={darkMode} />} />
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login darkMode={darkMode} />} />
             <Route path="/auth/callback/:userType" element={<AuthCallback setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/patient-dashboard" element={
               isLoggedIn && localStorage.getItem("userType") === "patient"
-                ? <PatientDashboard />
+                ? <PatientDashboard darkMode={darkMode} />
                 : <Navigate to="/login" />
             } />
             <Route path="/doctor-dashboard" element={
               isLoggedIn && localStorage.getItem("userType") === "doctor"
-                ? <DoctorDashboard />
+                ? <DoctorDashboard darkMode={darkMode} />
                 : <Navigate to="/login" />
             } />
           </Routes>

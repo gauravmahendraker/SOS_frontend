@@ -3,8 +3,9 @@ import axios from "axios";
 import DoctorProfile from "../components/DoctorProfile";
 import DoctorAppointments from "../components/doctorAppointments";
 import UploadPrescription from "../components/uploadPrescription";
+import "./doctorDashboard.css";
 
-const DoctorDashboard = () => {
+const DoctorDashboard = ({ darkMode }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -34,7 +35,7 @@ const DoctorDashboard = () => {
     if (!profile) return <div className="text-center text-gray-600 mt-8">No profile data available.</div>;
 
     return (
-        <div className="p-6 md:p-10 bg-gray-50 min-h-screen">
+        <div className={`p-6 md:p-10 bg-gray-50 min-h-screen ${darkMode ? "dark-mode" : "light-mode"}`}>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
                 Welcome, Dr. {profile.name}
             </h2>

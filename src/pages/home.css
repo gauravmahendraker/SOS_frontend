@@ -1,50 +1,41 @@
-/* Hero Section */
+/* home.css */
+.home-page {
+    padding: 2rem 0;
+    color: var(--text-color);
+}
+
 .hero-section {
-    max-width: 1200px;
-    width: 100%;
-    background: var(--card-background);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
 }
 
 .hero-content {
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding: 2rem;
+    flex-direction: column-reverse;
+    gap: 2rem;
+    margin-bottom: 3rem;
 }
 
 .hero-text {
     flex: 1;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .hero-text h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    color: var(--text-color);
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-color);
 }
 
 .hero-text .highlight {
     color: var(--primary-color);
-    background: linear-gradient(135deg, var(--primary-color), #a29bfe);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
 }
 
-.hero-text .subtitle {
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    color: var(--text-light);
-    margin-bottom: 2rem;
+.subtitle {
+    font-size: 1.1rem;
     line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    opacity: 0.9;
 }
 
 .hero-buttons {
@@ -56,94 +47,82 @@
 .hero-image {
     flex: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 1rem;
+    align-items: center;
 }
 
 .hero-image img {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    transition: transform 0.5s ease;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
 }
 
-.hero-image img:hover {
-    transform: scale(1.02);
-}
-
-/* Features Section */
 .features-section {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
 }
 
 .feature-card {
     background-color: var(--card-background);
-    border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
     transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .feature-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background-color: var(--primary-color);
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 12px;
     margin-bottom: 1rem;
 }
 
 .feature-card h3 {
     font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     color: var(--text-color);
 }
 
 .feature-card p {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-bottom: 1rem;
+    font-size: 0.95rem;
     line-height: 1.5;
+    color: var(--text-color);
+    opacity: 0.8;
 }
 
-.learn-more {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
+@media (min-width: 768px) {
+    .hero-content {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .features-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-text h1 {
+        font-size: 3rem;
+    }
 }
 
-.learn-more:hover {
-    text-decoration: underline;
-}
+@media (min-width: 1024px) {
+    .features-section {
+        grid-template-columns: repeat(4, 1fr);
+    }
 
-/* Get Started CTA */
-.get-started {
-    display: flex;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-.get-started .btn {
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
+    .hero-text h1 {
+        font-size: 3.5rem;
+    }
 }

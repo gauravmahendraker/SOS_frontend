@@ -1,9 +1,9 @@
 import React from "react";
-import "./home.css"; // optional if you want separate styles
+import "./home.css";
 
-const Home = () => {
+const Home = ({ darkMode }) => {
     return (
-        <div className="home-page">
+        <div className={`home-page ${darkMode ? "dark-mode" : "light-mode"}`}>
             <div className="hero-section">
                 <div className="hero-content">
                     <div className="hero-text">
@@ -54,7 +54,7 @@ const Home = () => {
                             </svg>
                         </div>
                         <h3>Book Appointments Easily</h3>
-                        <p>Seamlessly book consultation slots that suit your schedule and your doctor’s availability.</p>
+                        <p>Seamlessly book consultation slots that suit your schedule and your doctor's availability.</p>
                     </div>
 
                     <div className="feature-card">
@@ -79,7 +79,6 @@ const Home = () => {
                         <p>Doctors can register to accept appointments and manage patient prescriptions online.</p>
                     </div>
                 </div>
-
             </div>
         </div>
     );

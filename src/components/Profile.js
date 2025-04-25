@@ -1,4 +1,5 @@
 import React from "react";
+import "./Profile.css";
 
 const Profile = ({ profile }) => (
   <div className="card shadow-sm p-4 bg-light mb-4">

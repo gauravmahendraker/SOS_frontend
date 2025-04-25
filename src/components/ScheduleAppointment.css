@@ -1,136 +1,179 @@
-.schedule-appointment-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.schedule-appointment-container h2 {
-    color: #2c3e50;
-    margin-bottom: 24px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 12px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #4a5568;
-}
-
-select,
-.date-picker {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    font-size: 16px;
-    color: #2d3748;
-    background-color: #fff;
-}
-
-select:focus,
-.date-picker:focus {
-    outline: none;
-    border-color: #4299e1;
-    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
-}
-
-.available-slots-section {
-    margin-top: 30px;
-}
-
-.available-slots-section h3 {
-    margin-bottom: 15px;
-    color: #2c3e50;
-}
-
-.slots-container {
+/* ScheduleAppointment.css */
+.schedule-appointment {
+    background-color: var(--card-background);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    color: var(--text-color);
+  }
+  
+  .heading {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+  }
+  
+  .alert {
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .success {
+    background-color: #c6f6d5;
+    color: #2f855a;
+  }
+  
+  .error {
+    background-color: #fed7d7;
+    color: #c53030;
+  }
+  
+  .form {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
-    margin-bottom: 24px;
-}
-
-.slot-button {
-    padding: 12px;
-    background-color: #f7fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.slot-button:hover {
-    background-color: #edf2f7;
-}
-
-.slot-button.selected {
-    background-color: #ebf8ff;
-    border-color: #4299e1;
-    color: #2b6cb0;
-}
-
-.button-container {
-    margin-top: 24px;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+  }
+  
+  .form-field select,
+  .form-field input,
+  .date-picker {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    background-color: var(--card-background);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  
+  .form-field select:focus,
+  .form-field input:focus,
+  .date-picker:focus {
+    border-color: var(--primary-color);
+    outline: none;
+  }
+  
+  .slots-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .slots-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+  }
+  
+  .loading-text {
+    color: var(--primary-color);
     text-align: center;
-}
-
-.book-button {
-    background-color: #4299e1;
+  }
+  
+  .slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .slot {
+    padding: 0.75rem;
+    background-color: var(--secondary-background);
+    border: 1px solid var(--border-color);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition);
+    color: var(--text-color);
+  }
+  
+  .slot:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .slot.selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+  
+  .no-slots {
+    text-align: center;
+    color: var(--text-color);
+    opacity: 0.7;
+    padding: 1rem;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .book-button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-weight: 600;
+    border-radius: 0.25rem;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.book-button:hover:not(:disabled) {
-    background-color: #3182ce;
-}
-
-.book-button:disabled {
-    background-color: #a0aec0;
+    transition: var(--transition);
+  }
+  
+  .book-button:hover {
+    background-color: #3a80d2;
+  }
+  
+  .book-button:disabled {
+    background-color: #cbd5e0;
     cursor: not-allowed;
-}
-
-.success-message {
-    padding: 12px;
-    background-color: #f0fff4;
-    border: 1px solid #c6f6d5;
-    color: #2f855a;
-    border-radius: 4px;
-    margin-bottom: 16px;
-}
-
-.error-message {
-    padding: 12px;
-    background-color: #fff5f5;
-    border: 1px solid #feb2b2;
-    color: #c53030;
-    border-radius: 4px;
-    margin-bottom: 16px;
-}
-
-.loading-message,
-.no-slots-message {
-    text-align: center;
-    padding: 20px;
-    color: #718096;
-}
-
-@media (max-width: 768px) {
-    .slots-container {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  /* React DatePicker Overrides */
+  .react-datepicker {
+    font-family: inherit;
+    border-color: var(--border-color);
+  }
+  
+  .react-datepicker__header {
+    background-color: var(--secondary-background);
+  }
+  
+  .react-datepicker__current-month,
+  .react-datepicker__day-name,
+  .react-datepicker__day {
+    color: var(--text-color);
+  }
+  
+  .react-datepicker__day:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .react-datepicker__day--selected {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .form {
+      grid-template-columns: repeat(3, 1fr);
     }
-}
+    
+    .slots {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }

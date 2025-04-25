@@ -64,7 +64,7 @@ const AppointmentHistory = () => {
             completed: "secondary",
         }[status] || "dark";
 
-        return <span className={`badge bg-${statusClass} text-capitalize`}>{status}</span>;
+        return <span className={`badge bg-${statusClass}`}>{status}</span>;
     };
 
     const handleCancelAppointment = async (appointmentId) => {
@@ -86,8 +86,86 @@ const AppointmentHistory = () => {
         }
     };
 
+    // Categorize appointments
+    const categorizeAppointments = () => {
+        const now = new Date();
+        const upcoming = [];
+        const completed = [];
+        const canceled = [];
+
+        appointments.forEach(appointment => {
+            const appointmentDate = new Date(appointment.timeSlotStart);
+
+            if (appointment.status === "canceled") {
+                canceled.push(appointment);
+            } else if (appointment.status === "completed" || appointmentDate < now) {
+                completed.push(appointment);
+            } else {
+                upcoming.push(appointment);
+            }
+        });
+
+        // Sort upcoming by date (ascending)
+        upcoming.sort((a, b) => new Date(a.timeSlotStart) - new Date(b.timeSlotStart));
+
+        // Sort completed by date (descending)
+        completed.sort((a, b) => new Date(b.timeSlotStart) - new Date(a.timeSlotStart));
+
+        // Sort canceled by date (descending)
+        canceled.sort((a, b) => new Date(b.timeSlotStart) - new Date(a.timeSlotStart));
+
+        return { upcoming, completed, canceled };
+    };
+
+    const renderAppointmentCard = (appointment) => (
+        <div key={appointment._id} className="col-md-6">
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <h5 className="card-title mb-0">Dr. {appointment.doctorName}</h5>
+                        {getStatusBadge(appointment.status)}
+                    </div>
+                    <h6 className="card-subtitle text-muted mb-2">{appointment.doctorSpecialization}</h6>
+                    <p className="card-text mb-1">
+                        <strong>Date:</strong> {formatDateTime(appointment.timeSlotStart)}
+                    </p>
+                    <p className="card-text mb-1">
+                        <strong>Duration:</strong> {appointment.duration} minutes (
+                        {format(new Date(appointment.timeSlotStart), "p")} -{" "}
+                        {calculateEndTime(appointment.timeSlotStart, appointment.duration)})
+                    </p>
+                    {appointment.googleEventId && (
+                        <p className="text-success mb-2">
+                            <i className="bi bi-calendar-event"></i> Added to your Google Calendar
+                        </p>
+                    )}
+                    <div className="d-flex gap-2">
+                        {appointment.status === "confirmed" && (
+                            <button
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleCancelAppointment(appointment._id)}
+                            >
+                                Cancel
+                            </button>
+                        )}
+                        <button
+                            className="btn btn-outline-primary btn-sm"
+                            onClick={() => setSelectedAppointmentId(appointment._id)}
+                        >
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    const { upcoming, completed, canceled } = categorizeAppointments();
+
     if (loading) return <div className="text-center my-4">Loading your appointments...</div>;
     if (error) return <div className="alert alert-danger text-center">{error}</div>;
+
+    const noAppointments = upcoming.length === 0 && completed.length === 0 && canceled.length === 0;
 
     return (
         <div className="container my-4">
@@ -100,59 +178,43 @@ const AppointmentHistory = () => {
                 />
             )}
 
-            {appointments.length > 0 ? (
-                <div className="row g-3">
-                    {appointments.map((appointment) => (
-                        <div key={appointment._id} className="col-md-6">
-                            <div className="card shadow-sm">
-                                <div className="card-body">
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 className="card-title mb-0">Dr. {appointment.doctorName}</h5>
-                                        {getStatusBadge(appointment.status)}
-                                    </div>
-                                    <h6 className="card-subtitle text-muted mb-2">{appointment.doctorSpecialization}</h6>
-                                    <p className="card-text mb-1">
-                                        <strong>Date:</strong> {formatDateTime(appointment.timeSlotStart)}
-                                    </p>
-                                    <p className="card-text mb-1">
-                                        <strong>Duration:</strong> {appointment.duration} minutes (
-                                        {format(new Date(appointment.timeSlotStart), "p")} -{" "}
-                                        {calculateEndTime(appointment.timeSlotStart, appointment.duration)})
-                                    </p>
-                                    {appointment.googleEventId && (
-                                        <p className="text-success mb-2">
-                                            <i className="bi bi-calendar-event"></i> Added to your Google Calendar
-                                        </p>
-                                    )}
-                                    <div className="d-flex gap-2">
-                                        {appointment.status === "confirmed" && (
-                                            <button
-                                                className="btn btn-outline-danger btn-sm"
-                                                onClick={() => handleCancelAppointment(appointment._id)}
-                                            >
-                                                Cancel
-                                            </button>
-                                        )}
-                                        <button
-                                            className="btn btn-outline-primary btn-sm"
-                                            onClick={() => setSelectedAppointmentId(appointment._id)}
-                                        >
-                                            View Details
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div className="text-center mt-5">
+            {noAppointments ? (
+                <div className="no-appointments">
                     <div style={{ fontSize: "3rem" }}>📭</div>
                     <p className="mt-2">You don't have any appointments yet.</p>
                     <a href="/search-doctors" className="btn btn-primary mt-2">
                         Book Your First Appointment
                     </a>
                 </div>
+            ) : (
+                <>
+                    {upcoming.length > 0 && (
+                        <div className="appointment-section">
+                            <h3 className="section-title">Upcoming Appointments</h3>
+                            <div className="row">
+                                {upcoming.map(renderAppointmentCard)}
+                            </div>
+                        </div>
+                    )}
+
+                    {completed.length > 0 && (
+                        <div className="appointment-section">
+                            <h3 className="section-title">Completed Appointments</h3>
+                            <div className="row">
+                                {completed.map(renderAppointmentCard)}
+                            </div>
+                        </div>
+                    )}
+
+                    {canceled.length > 0 && (
+                        <div className="appointment-section">
+                            <h3 className="section-title">Canceled Appointments</h3>
+                            <div className="row">
+                                {canceled.map(renderAppointmentCard)}
+                            </div>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );

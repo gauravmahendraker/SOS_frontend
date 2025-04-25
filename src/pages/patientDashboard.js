@@ -4,8 +4,9 @@ import Profile from "../components/Profile";
 import AppointmentHistory from "../components/AppointmentHistory";
 import SearchDoctors from "../components/SearchDoctors";
 import ScheduleAppointment from "../components/ScheduleAppointment";
+import "./patientDashboard.css";
 
-const PatientDashboard = () => {
+const PatientDashboard = ({ darkMode }) => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -35,7 +36,7 @@ const PatientDashboard = () => {
     if (!profile) return <div className="text-center text-gray-600 mt-8">No profile data available.</div>;
 
     return (
-        <div className="p-6 md:p-10 bg-gray-50 min-h-screen">
+        <div className={`p-6 md:p-10 bg-gray-50 min-h-screen ${darkMode ? "dark-mode" : "light-mode"}`}>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
                 Welcome, {profile.name}
             </h2>
@@ -47,7 +48,7 @@ const PatientDashboard = () => {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all
-                            ${activeTab === tab 
+                            ${activeTab === tab
                                 ? "bg-blue-600 text-white shadow-md"
                                 : "bg-white text-gray-700 border border-gray-300 hover:bg-blue-100"
                             }`}

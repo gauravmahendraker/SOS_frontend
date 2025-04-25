@@ -9,9 +9,22 @@ const AppointmentHistory = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+    const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
     const API_URL = process.env.REACT_APP_API_URL;
 
+    useEffect(() => {
+        const loadRazorpay = () => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => setRazorpayLoaded(true);  // Set razorpayLoaded to true after script loads
+            script.onerror = () => setError("Failed to load Razorpay script");
+            document.body.appendChild(script);
+        };
+
+        loadRazorpay();  // Load Razorpay script when component mounts
+    }, []);
+    
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
@@ -67,6 +80,61 @@ const AppointmentHistory = () => {
         return <span className={`badge bg-${statusClass}`}>{status}</span>;
     };
 
+    const handlePayment = async (appointment) => {
+        if (!razorpayLoaded) {
+            alert("Razorpay is not loaded. Please try again.");
+            return;
+        }
+        
+        try {
+            console.log('Razorpay Loaded:', razorpayLoaded);
+            const res = await axios.post(
+                `${API_URL}/payment/create-order`,
+                { appointmentId: appointment._id },
+                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+            );
+
+            const { orderId, amount, currency } = res.data.data;
+            // console.log(res.data.data);
+
+            const options = {
+                key: process.env.REACT_APP_RAZORPAY_KEY,  // from Razorpay dashboard
+                amount,
+                currency,
+                name: "Doctor Appointment",
+                description: "Appointment Payment",
+                order_id: orderId,
+                handler: async (response) => {
+                    // Send this to backend for verification
+                    await axios.post(
+                        `${API_URL}/payment/verify`,
+                        {
+                            appointmentId: appointment._id,
+                            ...response, // includes payment_id, order_id, signature
+                        },
+                        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+                    );
+
+                    alert("Payment Successful!");
+                    window.location.reload(); // or update state accordingly
+                },
+                prefill: {
+                    name: "Patient Name", // optional
+                    email: "email@example.com", // optional
+                },
+                theme: {
+                    color: "#3399cc",
+                },
+            };
+
+            const razor = new window.Razorpay(options);
+            razor.open();
+        } catch (err) {
+            console.error("Payment error:", err);
+            alert("Payment failed. Please try again.");
+        }
+    };
+
     const handleCancelAppointment = async (appointmentId) => {
         try {
             const response = await axios.post(
@@ -92,7 +160,6 @@ const AppointmentHistory = () => {
         const upcoming = [];
         const completed = [];
         const canceled = [];
-
         appointments.forEach(appointment => {
             const appointmentDate = new Date(appointment.timeSlotStart);
 
@@ -148,6 +215,14 @@ const AppointmentHistory = () => {
                                 Cancel
                             </button>
                         )}
+                        {appointment.status === "confirmed" && !appointment.isPaid && (
+                            <button
+                                className="btn btn-success btn-sm"
+                                onClick={() => handlePayment(appointment)}
+                            >
+                                Pay Now
+                            </button>
+                        )}
                         <button
                             className="btn btn-outline-primary btn-sm"
                             onClick={() => setSelectedAppointmentId(appointment._id)}
@@ -166,7 +241,6 @@ const AppointmentHistory = () => {
     if (error) return <div className="alert alert-danger text-center">{error}</div>;
 
     const noAppointments = upcoming.length === 0 && completed.length === 0 && canceled.length === 0;
-
     return (
         <div className="container my-4">
             <h2 className="mb-4">📅 My Appointments</h2>

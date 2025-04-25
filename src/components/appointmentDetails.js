@@ -36,7 +36,6 @@ const AppointmentDetails = ({ appointmentId, onClose }) => {
 
     if (loading) return <div className="loading">Loading details...</div>;
     if (error) return <div className="error">{error}</div>;
-    // console.log(details);
     return (
         <div className="appointment-details-modal">
             <div className="modal-content">
@@ -49,6 +48,7 @@ const AppointmentDetails = ({ appointmentId, onClose }) => {
                 <p><strong>Time Slot:</strong> {details.timeSlotStart}</p>
                 <p><strong>Duration:</strong> {details.duration} minutes</p>
                 <p><strong>Status:</strong> {details.status}</p>
+                <p><strong>IsPaid:</strong> {details.isPaid}</p>
                 {details.prescriptions?.length > 0 ? (
                 <div className="prescriptions">
                     <h4>Prescriptions</h4>

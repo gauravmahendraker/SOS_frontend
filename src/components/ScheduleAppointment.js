@@ -69,7 +69,7 @@ const ScheduleAppointment = () => {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                 }
             );
-
+            console.log(response)
             if (response.status === 200) {
                 const formattedSlots = response.data.data.map(slot => ({
                     start: new Date(slot.start),
@@ -105,7 +105,7 @@ const ScheduleAppointment = () => {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         if (selectedDoctor) {
-            checkAvailabilityForDate(date);
+            checkAvailabilityForDate(date, selectedDoctor);
         }
     };
 
@@ -203,7 +203,7 @@ const ScheduleAppointment = () => {
                         onChange={handleDateChange}
                         filterDate={isDateInPast}
                         minDate={new Date()}
-                        dateFormat="MMMM d, yyyy"
+                        dateFormat="MMMM dd yyyy"
                         className="date-picker"
                         disabled={!selectedDoctor || loading}
                     />

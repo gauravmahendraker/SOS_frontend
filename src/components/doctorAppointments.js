@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import "./AppointmentHistory.css"; 
-import AppointmentDetails from "./appointmentDetails.js"; 
+import "./AppointmentHistory.css";
+import AppointmentDetails from "./appointmentDetails.js";
 
 const DoctorAppointments = () => {
     const [appointments, setAppointments] = useState([]);
@@ -27,6 +27,7 @@ const DoctorAppointments = () => {
 
                 if (response.status === 200) {
                     setAppointments(response.data.data);
+                    console.log(response.data.data);
                 }
             } catch (err) {
                 console.error("Error fetching appointments:", err);
@@ -104,12 +105,12 @@ const DoctorAppointments = () => {
 
     const handleUpload = async () => {
         if (!file || !prescriptionAppointmentId) return;
-    
+
         const formData = new FormData();
         formData.append("file", file);
         formData.append("description", description);
         formData.append("appointmentId", prescriptionAppointmentId);
-    
+
         try {
             const response = await axios.post(
                 `${API_URL}/appointment/doctor/upload-prescription`,
@@ -128,7 +129,7 @@ const DoctorAppointments = () => {
             alert("Failed to upload prescription");
         }
     };
-    
+
     if (loading) {
         return <div className="loading-spinner">Loading appointment schedule...</div>;
     }
@@ -243,8 +244,8 @@ const DoctorAppointments = () => {
                                         </div>
 
                                         <div className="appointment-actions">
-                                        {prescriptionAppointmentId === appointment._id ? (
-                                            <div className="upload-section">
+                                            {prescriptionAppointmentId === appointment._id ? (
+                                                <div className="upload-section">
                                                     <input
                                                         type="file"
                                                         accept=".pdf,.jpg,.png"
@@ -267,10 +268,12 @@ const DoctorAppointments = () => {
                                                     className="prescription-btn"
                                                     onClick={() => handleAddPrescription(appointment._id)}
                                                 >
-                                                    Add Prescription
+                                                    {appointment.prescriptions?.length > 0
+                                                        ? "Add More Prescriptions"
+                                                        : "Add Prescription"}
                                                 </button>
                                             )}
-                                           
+
                                             <button
                                                 className="details-btn"
                                                 onClick={() => setSelectedAppointmentId(appointment._id)}

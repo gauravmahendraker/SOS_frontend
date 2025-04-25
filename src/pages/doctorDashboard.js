@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DoctorProfile from "../components/DoctorProfile";
 import DoctorAppointments from "../components/doctorAppointments";
-import UploadPrescription from "../components/uploadPrescription";
 import "./doctorDashboard.css";
 
 const DoctorDashboard = ({ darkMode }) => {
@@ -40,9 +39,9 @@ const DoctorDashboard = ({ darkMode }) => {
                 Welcome, Dr. {profile.name}
             </h2>
 
-            {/* Tabs */}
+            {/* Tabs - Removed prescriptions and patients tabs */}
             <div className="flex flex-wrap gap-4 mb-6">
-                {["profile", "appointments", "prescriptions", "patients"].map(tab => (
+                {["profile", "appointments"].map(tab => (
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
@@ -54,8 +53,6 @@ const DoctorDashboard = ({ darkMode }) => {
                     >
                         {tab === "profile" && "Profile"}
                         {tab === "appointments" && "Appointments"}
-                        {tab === "prescriptions" && "Upload Prescriptions"}
-                        {tab === "patients" && "Patient Records"}
                     </button>
                 ))}
             </div>
@@ -88,10 +85,6 @@ const DoctorDashboard = ({ darkMode }) => {
                 />
                 }
                 {activeTab === "appointments" && <DoctorAppointments />}
-                {activeTab === "prescriptions" && <UploadPrescription />}
-                {activeTab === "patients" && (
-                    <div className="text-gray-600 text-center">Coming Soon: Patient Records</div>
-                )}
             </div>
         </div>
     );

@@ -15,12 +15,36 @@ const Home = ({ darkMode }) => {
                             delivering seamless appointments and consultations in seconds.
                         </p>
                         <div className="hero-buttons">
-                            <a href="/login" className="btn primary">
+                            <button
+                                className="btn primary"
+                                onClick={() => {
+                                    const token = localStorage.getItem("token");
+                                    const userType = localStorage.getItem("userType");
+                                    if (token && userType) {
+                                        window.location.href = userType === "doctor" ? "/doctor-dashboard" : "/patient-dashboard";
+                                    } else {
+                                        window.location.href = "/login";
+                                    }
+                                }}
+                            >
                                 Get Started <span className="arrow">→</span>
-                            </a>
-                            <a href="/login" className="btn secondary">
+                            </button>
+
+                            <button
+                                className="btn secondary"
+                                onClick={() => {
+                                    const token = localStorage.getItem("token");
+                                    const userType = localStorage.getItem("userType");
+                                    if (token && userType) {
+                                        window.location.href = userType === "doctor" ? "/doctor-dashboard" : "/patient-dashboard";
+                                    } else {
+                                        window.location.href = "/login";
+                                    }
+                                }}
+                            >
                                 Explore Doctors
-                            </a>
+                            </button>
+
                         </div>
                     </div>
                     <div className="hero-image">

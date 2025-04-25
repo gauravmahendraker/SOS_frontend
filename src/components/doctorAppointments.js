@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import "./AppointmentHistory.css";
+import "./doctorAppointments.css";
 import AppointmentDetails from "./appointmentDetails.js";
 
 const DoctorAppointments = () => {

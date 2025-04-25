@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DoctorProfile from "../components/DoctorProfile";
 import DoctorAppointments from "../components/doctorAppointments";
+import Modal from "../components/modal";
 import "./doctorDashboard.css";
 
 const DoctorDashboard = ({ darkMode }) => {
@@ -9,6 +10,7 @@ const DoctorDashboard = ({ darkMode }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState("profile");
+    const [profileMessage, setProfileMessage] = useState("");
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -39,12 +41,14 @@ const DoctorDashboard = ({ darkMode }) => {
                 Welcome, Dr. {profile.name}
             </h2>
 
-            {/* Tabs - Removed prescriptions and patients tabs */}
             <div className="flex flex-wrap gap-4 mb-6">
                 {["profile", "appointments"].map(tab => (
                     <button
                         key={tab}
-                        onClick={() => setActiveTab(tab)}
+                        onClick={() => {
+                            setActiveTab(tab);
+                            setProfileMessage("");
+                        }}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-all
                             ${activeTab === tab
                                 ? "bg-blue-600 text-white shadow-md"
@@ -57,34 +61,50 @@ const DoctorDashboard = ({ darkMode }) => {
                 ))}
             </div>
 
-            {/* Load Components Conditionally */}
             <div className="bg-white p-6 rounded-lg shadow">
-                {activeTab === "profile" && <DoctorProfile
-                    profile={profile}
-                    onUpdate={async (updatedData) => {
-                        try {
-                            const response = await fetch(`${API_URL}/doctor/${updatedData.email}`, {
-                                method: "PUT",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
-                                },
-                                body: JSON.stringify(updatedData),
-                            });
+                {activeTab === "profile" && (
+                    <>
+                        {profileMessage && (
+                            <Modal
+                                message={profileMessage}
+                                onClose={() => setProfileMessage("")}
+                            />
+                        )}
 
-                            const result = await response.json();
-                            if (!response.ok) throw new Error(result.message);
+                        <DoctorProfile
+                            profile={profile}
+                            onUpdate={async (updatedData) => {
+                                try {
+                                    const response = await fetch(`${API_URL}/doctor/${updatedData.email}`, {
+                                        method: "PUT",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                                        },
+                                        body: JSON.stringify(updatedData),
+                                    });
 
-                            alert("Doctor profile updated successfully!");
-                            // Optionally update local state here with result.data
-                        } catch (err) {
-                            console.error("Error updating doctor:", err);
-                            alert("Failed to update doctor profile.");
-                        }
-                    }}
-                />
-                }
-                {activeTab === "appointments" && <DoctorAppointments />}
+                                    const result = await response.json();
+                                    if (!response.ok) throw new Error(result.message);
+
+                                    alert("Doctor profile updated successfully!");
+                                    setProfileMessage("");
+                                } catch (err) {
+                                    console.error("Error updating doctor:", err);
+                                    alert("Failed to update doctor profile.");
+                                }
+                            }}
+                        />
+                    </>
+                )}
+                {activeTab === "appointments" && (
+                    <DoctorAppointments
+                        onSetAvailability={() => {
+                            setActiveTab("profile");
+                            setProfileMessage("👉 Edit your profile to add available slots.");
+                        }}
+                    />
+                )}
             </div>
         </div>
     );

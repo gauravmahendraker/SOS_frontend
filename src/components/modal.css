@@ -1,0 +1,45 @@
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.custom-modal-content {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.custom-modal-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.custom-modal-close-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.custom-modal-close-btn:hover {
+    background-color: #3a80d2;
+}

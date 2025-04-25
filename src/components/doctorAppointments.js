@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import "./doctorAppointments.css";
 import AppointmentDetails from "./appointmentDetails.js";
 
-const DoctorAppointments = () => {
+const DoctorAppointments = ({ onSetAvailability }) => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -293,7 +293,7 @@ const DoctorAppointments = () => {
                     <p>You don't have any appointments scheduled yet.</p>
                     <button
                         className="set-availability-btn"
-                        onClick={() => window.location.href = "/set-availability"}
+                        onClick={onSetAvailability}
                     >
                         Set Your Availability
                     </button>

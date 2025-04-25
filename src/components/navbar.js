@@ -1,27 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css'; // Make sure this is present
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
-function Navbar() {
+const Navbar = ({ isLoggedIn, onLogout }) => {
   return (
     <nav className="navbar">
-      <div className="navbar-left">
-        <Link to="/" className="logo">Smart Health</Link>
-      </div>
-
-      <div className="navbar-center">
-        <ul className="nav-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-        </ul>
-      </div>
-
-      <div className="navbar-right">
-        <Link to="/login" className="login-button">Login</Link>
-        {/* <Link to="/register" className="register-button">Register</Link> */}
+      <Link to="/" className="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" className="logo-icon">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        Smart Health
+      </Link>
+      <div className="nav-buttons">
+        {isLoggedIn ? (
+          <button onClick={onLogout} className="btn secondary">Logout</button>
+        ) : (
+          <Link to="/login" className="btn primary">SignIn <span className="arrow">→</span></Link>
+        )}
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

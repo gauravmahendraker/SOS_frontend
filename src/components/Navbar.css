@@ -1,53 +1,65 @@
 /* Navbar.css */
 .navbar {
-    background-color: #ffffff;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+  background-color: var(--card-background);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.theme-selector {
+  display: flex;
+  align-items: center;
+  background-color: var(--secondary-color);
+  border-radius: 20px;
+  padding: 0.25rem;
+  margin-right: 1rem;
+}
+
+.theme-option {
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.theme-option.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
   }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #007bff;
-    text-decoration: none;
+
+  .theme-selector {
+    display: none;
   }
-  
-  .navbar-center .nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbar-center .nav-links a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .navbar-center .nav-links a:hover {
-    color: #007bff;
-  }
-  
-  .navbar-right .login-button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-  }
-  
-  .navbar-right .login-button:hover {
-    background-color: #0056b3;
-  }
-  
+}

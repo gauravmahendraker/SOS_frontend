@@ -1,60 +1,58 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Login from "./pages/login";
 import PatientDashboard from "./pages/patientDashboard";
 import DoctorDashboard from "./pages/doctorDashboard";
+import Home from "./pages/home";
 import AuthCallback from "./services/authCallback";
+import { Sun, Moon } from "lucide-react";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDarkMode(prefersDark);
+    document.body.className = prefersDark ? "dark-mode" : "light-mode";
+  }, []);
+
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+    document.body.className = !darkMode ? "dark-mode" : "light-mode";
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userType");
+    setIsLoggedIn(false);
+    window.location.href = "/"; // redirect to homepage
+  };
+
   return (
     <Router>
-      <div className="App">
-        <Navbar />
+      <div className={`App ${darkMode ? "dark-mode" : "light-mode"}`}>
+        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <div className="theme-toggle" onClick={toggleTheme}>
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </div>
         <div className="container">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <div className="home-page">
-                  <div className="hero-section">
-                    <div className="hero-content">
-                      <div className="hero-text">
-                        <h1>
-                          Welcome to{" "}
-                          <span className="highlight">Smart Health Portal</span>
-                        </h1>
-                        <p>
-                          Your one-stop solution for booking appointments,
-                          consulting doctors, and managing your health records
-                          with ease and security.
-                        </p>
-                        <div className="hero-buttons">
-                          <a href="/login" className="btn primary">
-                            Login
-                          </a>
-                          <a href="/search" className="btn secondary">
-                            Explore Doctors
-                          </a>
-                        </div>
-                      </div>
-                      <div className="hero-image">
-                        {/* <img
-                          src="images.jpeg"
-                          alt="Healthcare"
-                        /> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              }
-            />
-
-            <Route path="/login" element={<Login />} />
-            <Route path="/patient-dashboard" element={<PatientDashboard />} />
-            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-            <Route path="/auth/callback/:userType" element={<AuthCallback />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
+            <Route path="/auth/callback/:userType" element={<AuthCallback setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/patient-dashboard" element={
+              isLoggedIn && localStorage.getItem("userType") === "patient"
+                ? <PatientDashboard />
+                : <Navigate to="/login" />
+            } />
+            <Route path="/doctor-dashboard" element={
+              isLoggedIn && localStorage.getItem("userType") === "doctor"
+                ? <DoctorDashboard />
+                : <Navigate to="/login" />
+            } />
           </Routes>
         </div>
       </div>

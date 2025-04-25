@@ -2,23 +2,23 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const AuthCallback = () => {
+const AuthCallback = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
-  const { userType } = useParams(); // Get 'doctor' or 'patient' from the URL
+  const { userType } = useParams();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");
-    const tempUserType = localStorage.getItem("tempUserType"); // Retrieve user type
+    const tempUserType = localStorage.getItem("tempUserType");
 
     if (code && tempUserType) {
       axios.post(`${process.env.REACT_APP_API_URL}/auth/google/callback/${tempUserType}`, { code })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("userType", tempUserType);
-          localStorage.removeItem("tempUserType"); // Remove after successful authentication
+          localStorage.removeItem("tempUserType");
 
-          // Redirect to the appropriate dashboard
+          setIsLoggedIn?.(true);  // Notify App.js
           navigate(tempUserType === "doctor" ? "/doctor-dashboard" : "/patient-dashboard");
         })
         .catch((err) => {

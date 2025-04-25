@@ -1,3 +1,9 @@
+# Backend Repo
+https://github.com/gauravmahendraker/SOS_Smart_Wellness_Tracker_System
+
+# Deployed at
+https://sos-frontend-six.vercel.app
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

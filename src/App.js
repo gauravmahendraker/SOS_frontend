@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/navbar";
 import Login from "./pages/login";
 import PatientDashboard from "./pages/patientDashboard";
 import DoctorDashboard from "./pages/doctorDashboard";

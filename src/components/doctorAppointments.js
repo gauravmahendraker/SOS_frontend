@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { format } from "date-fns";
-import "./AppointmentHistory.css"; // Reusing the same CSS
-import AppointmentDetails from "./AppointmentDetails.js"; // Reusing the same component
+import "./AppointmentHistory.css"; 
+import AppointmentDetails from "./appointmentDetails.js"; 
 
 const DoctorAppointments = () => {
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
-
+    const [file, setFile] = useState(null);
+    const [description, setDescription] = useState(null);
+    const [prescriptionAppointmentId, setprescriptionAppointmentId] = useState(null);
 
     const API_URL = process.env.REACT_APP_API_URL;
 
@@ -95,9 +97,38 @@ const DoctorAppointments = () => {
     };
 
     const handleAddPrescription = (appointmentId) => {
-        window.location.href = `/upload-prescription/${appointmentId}`;
+        setprescriptionAppointmentId(appointmentId);
+        setFile(null);
+        setDescription("");
     };
 
+    const handleUpload = async () => {
+        if (!file || !prescriptionAppointmentId) return;
+    
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("description", description);
+        formData.append("appointmentId", prescriptionAppointmentId);
+    
+        try {
+            const response = await axios.post(
+                `${API_URL}/appointment/doctor/upload-prescription`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            alert("Prescription uploaded successfully");
+            setprescriptionAppointmentId(null);
+        } catch (err) {
+            console.error("Upload error:", err);
+            alert("Failed to upload prescription");
+        }
+    };
+    
     if (loading) {
         return <div className="loading-spinner">Loading appointment schedule...</div>;
     }
@@ -212,12 +243,34 @@ const DoctorAppointments = () => {
                                         </div>
 
                                         <div className="appointment-actions">
-                                            <button
-                                                className="prescription-btn"
-                                                onClick={() => handleAddPrescription(appointment._id)}
-                                            >
-                                                Add Prescription
-                                            </button>
+                                        {prescriptionAppointmentId === appointment._id ? (
+                                            <div className="upload-section">
+                                                    <input
+                                                        type="file"
+                                                        accept=".pdf,.jpg,.png"
+                                                        onChange={(e) => setFile(e.target.files[0])}
+                                                    />
+                                                    <textarea
+                                                        placeholder="Enter description (optional)"
+                                                        value={description}
+                                                        onChange={(e) => setDescription(e.target.value)}
+                                                    />
+                                                    <button className="upload-btn" onClick={handleUpload}>
+                                                        Upload
+                                                    </button>
+                                                    <button className="cancel-btn" onClick={() => setprescriptionAppointmentId(null)}>
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    className="prescription-btn"
+                                                    onClick={() => handleAddPrescription(appointment._id)}
+                                                >
+                                                    Add Prescription
+                                                </button>
+                                            )}
+                                           
                                             <button
                                                 className="details-btn"
                                                 onClick={() => setSelectedAppointmentId(appointment._id)}

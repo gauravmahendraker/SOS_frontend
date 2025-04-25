@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./AppointmentDetails.css";
+import "./appointmentDetails.css";
 
 const AppointmentDetails = ({ appointmentId, onClose }) => {
     const [details, setDetails] = useState(null);

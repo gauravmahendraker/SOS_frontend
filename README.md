@@ -2,7 +2,11 @@
 https://github.com/gauravmahendraker/SOS_Smart_Wellness_Tracker_System
 
 # Deployed at
-https://sos-frontend-six.vercel.app
+- https://sos-smart-wellness-tracker-system.onrender.com  - backend
+- https://sos-frontend-six.vercel.app  - frontend
+  
+# Presentation Link
+https://www.canva.com/design/DAGltI9Ok3Q/uzY8oazjDWSLajQDLUB2mA/view?utm_content=DAGltI9Ok3Q&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1f56f0ca8f
 
 # Getting Started with Create React App
 
